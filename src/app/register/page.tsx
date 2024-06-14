@@ -13,6 +13,8 @@ import React from "react";
 import Logo from "../../assets/svgs/logo.svg";
 import Link from "next/link";
 import { useForm, SubmitHandler } from "react-hook-form";
+import { modifyPayload } from "@/utils/modifyFormData";
+import { registerPatient } from "@/service/actions/registerPatient";
 
 export interface IPatient {
   name: string;
@@ -28,8 +30,14 @@ export interface IPatientData {
 
 const RegisterPage: React.FC = () => {
   const { register, handleSubmit } = useForm<IPatientData>();
-  const onSubmit: SubmitHandler<IPatientData> = (data) => {
-    console.log(data);
+  const onSubmit: SubmitHandler<IPatientData> = async (data) => {
+    const formData = modifyPayload(data);
+    try {
+      const res = await registerPatient(formData);
+      console.log(res);
+    } catch (err: any) {
+      console.log(err.message);
+    }
   };
   return (
     <Container>
