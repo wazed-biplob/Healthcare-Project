@@ -7,7 +7,13 @@ const Footer = () => {
   return (
     <div style={{ backgroundColor: "grey", padding: "20px 20px" }}>
       <Container>
-        <Stack direction="row" gap={4} justifyContent="center" margin={5}>
+        <Stack
+          direction="row"
+          gap={4}
+          justifyContent="center"
+          margin={5}
+          color="white"
+        >
           <Typography component={Link} href="/consultation">
             Consultation
           </Typography>
@@ -25,7 +31,13 @@ const Footer = () => {
           </Typography>
         </Stack>
 
-        <Stack direction="row" gap={4} justifyContent="center" margin={5}>
+        <Stack
+          direction="row"
+          gap={4}
+          justifyContent="center"
+          margin={5}
+          color="white"
+        >
           <Facebook style={{ width: "30px", height: "30px" }} />
           <Instagram style={{ width: "30px", height: "30px" }} />
           <LinkedIn style={{ width: "30px", height: "30px" }} />

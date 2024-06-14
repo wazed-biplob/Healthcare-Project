@@ -1,10 +1,11 @@
 import { Box, Button, Container, Stack, Typography } from "@mui/material";
 import Image from "next/image";
+import { useEffect } from "react";
 
 const Specialist = async () => {
   const res = await fetch("http://localhost:5000/api/v1/specialities");
   const data = await res.json();
-  const specialities = data.data;
+  const specialities = data?.data;
 
   return (
     <Container
