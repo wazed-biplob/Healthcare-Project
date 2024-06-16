@@ -1,3 +1,4 @@
+"use client";
 import {
   Box,
   Button,
@@ -11,7 +12,31 @@ import React from "react";
 import Logo from "@/assets/svgs/logo.svg";
 import Image from "next/image";
 import Link from "next/link";
+import { IPatientData } from "../register/page";
+import { SubmitHandler, useForm } from "react-hook-form";
+import { loginPatient } from "@/service/actions/loginPatient";
+import { storeUserInfo } from "@/service/actions/authService";
+import { toast } from "sonner";
+import { useRouter } from "next/navigation";
+export interface ILoginData {
+  email: string;
+  password: string;
+}
 const LoginPage = () => {
+  const router = useRouter();
+  const { register, handleSubmit } = useForm<ILoginData>();
+  const onSubmit: SubmitHandler<ILoginData> = async (data: any) => {
+    try {
+      const res = await loginPatient(data);
+      if (res?.data?.accessToken) {
+        storeUserInfo({ accessToken: res?.data?.accessToken });
+        toast.success(res?.message);
+        router.push("/");
+      }
+    } catch (err: any) {
+      console.log(err.message);
+    }
+  };
   return (
     <Container>
       <Stack
@@ -42,7 +67,7 @@ const LoginPage = () => {
             </Box>
           </Stack>
           <Box sx={{ textAlign: "center", marginY: "20px" }}>
-            <form>
+            <form onSubmit={handleSubmit(onSubmit)}>
               <Grid container spacing={2}>
                 <Grid item md={6} my={1}>
                   <TextField
@@ -50,6 +75,7 @@ const LoginPage = () => {
                     variant="outlined"
                     size="small"
                     fullWidth={true}
+                    {...register("email")}
                   />
                 </Grid>
                 <Grid item md={6} my={1}>
@@ -59,19 +85,20 @@ const LoginPage = () => {
                     variant="outlined"
                     size="small"
                     fullWidth={true}
+                    {...register("password")}
                   />
                 </Grid>
               </Grid>
               <Typography textAlign="end" component="p" marginBottom={2}>
                 <Link href="#">Forget Password?</Link>
               </Typography>
-              <Button sx={{ marginY: "10px" }} fullWidth={true}>
-                Register
+              <Button type="submit" sx={{ marginY: "10px" }} fullWidth={true}>
+                Login
               </Button>
             </form>
             <Typography component="p">
               Don&apos;t you already have an Account?
-              <Link href="/register">Create An Account</Link>
+              <Link href="/register">&nbsp;Create An Account</Link>
             </Typography>
           </Box>
         </Box>
