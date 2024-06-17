@@ -10,14 +10,15 @@ import {
 } from "@mui/material";
 import Image from "next/image";
 import React from "react";
-import Logo from "../../assets/svgs/logo.svg";
+// import Logo from "../../assets/svgs/logo.svg";
 import Link from "next/link";
 import { useForm, SubmitHandler } from "react-hook-form";
 import { modifyPayload } from "@/utils/modifyFormData";
 import { registerPatient } from "@/service/actions/registerPatient";
 import { toast } from "sonner";
-import { Router } from "next/router";
 import { useRouter } from "next/navigation";
+import { storeUserInfo } from "@/service/actions/authService";
+import { loginPatient } from "@/service/actions/loginPatient";
 
 export interface IPatient {
   name: string;
@@ -31,15 +32,29 @@ export interface IPatientData {
   password: string;
 }
 
-const RegisterPage: React.FC = () => {
+const RegisterPage = () => {
   const router = useRouter();
   const { register, handleSubmit } = useForm<IPatientData>();
   const onSubmit: SubmitHandler<IPatientData> = async (data) => {
     const formData = modifyPayload(data);
+    console.log(data);
     try {
-      const res = await registerPatient(formData);
-      toast.success(res?.message);
-      router.push("/login");
+      const userInfo = await registerPatient(formData);
+      console.log(userInfo);
+
+      if (userInfo?.data?.id) {
+        toast?.success(userInfo?.message);
+
+        const res = await loginPatient({
+          password: data?.password,
+          email: data?.patient?.email,
+        });
+        if (res?.data?.accessToken) {
+          storeUserInfo({ accessToken: res?.data?.accessToken });
+          toast.success(res?.message);
+          router.push("/");
+        }
+      }
     } catch (err: any) {
       console.log(err.message);
     }
@@ -69,11 +84,11 @@ const RegisterPage: React.FC = () => {
             }}
           >
             <Box>
-              <Image src={Logo} width={50} height={50} alt="image" />
+              {/* <Image src={Logo} width={50} height={50} alt="image" /> */}
             </Box>
             <Box>
               <Typography variant="h6" fontWeight={600} marginY={4}>
-                Patient Register
+                Patient Registration
               </Typography>
             </Box>
           </Stack>

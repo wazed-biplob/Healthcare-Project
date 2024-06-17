@@ -1,11 +1,14 @@
 "use client";
 import { getUserInfo, removeUser } from "@/service/actions/authService";
 import { Box, Button, Container, Link, Stack, Typography } from "@mui/material";
+import { useRouter } from "next/navigation";
 
 const Navbar = () => {
   const userInfo = getUserInfo();
+  const router = useRouter();
   const handleLogOut = () => {
     removeUser();
+    router.refresh();
   };
   return (
     <Container>

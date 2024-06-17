@@ -9,10 +9,9 @@ import {
   Typography,
 } from "@mui/material";
 import React from "react";
-import Logo from "@/assets/svgs/logo.svg";
+import Logo from "../../assets/svgs/logo.svg";
 import Image from "next/image";
 import Link from "next/link";
-import { IPatientData } from "../register/page";
 import { SubmitHandler, useForm } from "react-hook-form";
 import { loginPatient } from "@/service/actions/loginPatient";
 import { storeUserInfo } from "@/service/actions/authService";
