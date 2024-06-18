@@ -12,19 +12,20 @@ import React from "react";
 import Logo from "../../assets/svgs/logo.svg";
 import Image from "next/image";
 import Link from "next/link";
-import { SubmitHandler, useForm } from "react-hook-form";
+import { FieldValues, SubmitHandler, useForm } from "react-hook-form";
 import { loginPatient } from "@/service/actions/loginPatient";
 import { storeUserInfo } from "@/service/actions/authService";
 import { toast } from "sonner";
 import { useRouter } from "next/navigation";
+import MyForm from "@/components/forms/MyForm";
+import MyInput from "@/components/forms/MyInput";
 export interface ILoginData {
   email: string;
   password: string;
 }
 const LoginPage = () => {
   const router = useRouter();
-  const { register, handleSubmit } = useForm<ILoginData>();
-  const onSubmit: SubmitHandler<ILoginData> = async (data: any) => {
+  const handleLogin = async (data: ILoginData) => {
     try {
       const res = await loginPatient(data);
       if (res?.data?.accessToken) {
@@ -66,25 +67,22 @@ const LoginPage = () => {
             </Box>
           </Stack>
           <Box sx={{ textAlign: "center", marginY: "20px" }}>
-            <form onSubmit={handleSubmit(onSubmit)}>
+            <MyForm onSubmit={handleLogin}>
               <Grid container spacing={2}>
                 <Grid item md={6} my={1}>
-                  <TextField
+                  <MyInput
+                    name="email"
                     label="Email"
-                    variant="outlined"
-                    size="small"
+                    type="email"
                     fullWidth={true}
-                    {...register("email")}
                   />
                 </Grid>
                 <Grid item md={6} my={1}>
-                  <TextField
+                  <MyInput
+                    name="password"
                     label="Password"
                     type="password"
-                    variant="outlined"
-                    size="small"
                     fullWidth={true}
-                    {...register("password")}
                   />
                 </Grid>
               </Grid>
@@ -94,7 +92,7 @@ const LoginPage = () => {
               <Button type="submit" sx={{ marginY: "10px" }} fullWidth={true}>
                 Login
               </Button>
-            </form>
+            </MyForm>
             <Typography component="p">
               Don&apos;t you already have an Account?
               <Link href="/register">&nbsp;Create An Account</Link>
