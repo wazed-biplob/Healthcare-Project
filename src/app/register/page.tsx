@@ -21,19 +21,42 @@ import { storeUserInfo } from "@/service/actions/authService";
 import { loginPatient } from "@/service/actions/loginPatient";
 import MyForm from "@/components/forms/MyForm";
 import MyInput from "@/components/forms/MyInput";
+import z from "zod";
+import { zodResolver } from "@hookform/resolvers/zod";
 
-export interface IPatient {
-  name: string;
-  email: string;
-  contactNumber: string;
-  address: string;
-}
+// export interface IPatient {
+//   name: string;
+//   email: string;
+//   contactNumber: string;
+//   address: string;
+// }
 
-export interface IPatientData {
-  patient: IPatient;
-  password: string;
-}
+// export interface IPatientData {
+//   patient: IPatient;
+//   password: string;
+// }
 
+export const patientValidationSchema = z.object({
+  name: z.string().min(1, "Enter Your Full Name"),
+  email: z.string().email("Please, Provide Valid Email"),
+  contactNumber: z.string().regex(/^\d{11}$/, "Provide a Valid Phone Number"),
+  address: z.string().min(1, "Provide Address"),
+});
+
+export const validationSchema = z.object({
+  password: z.string().min(6, "At least 6 characters"),
+  patient: patientValidationSchema,
+});
+
+export const defaultValues = {
+  password: "",
+  patient: {
+    name: "",
+    email: "",
+    contactNumber: "",
+    address: "",
+  },
+};
 const RegisterPage = () => {
   const router = useRouter();
   const handleRegistration = async (data: FieldValues) => {
@@ -93,12 +116,17 @@ const RegisterPage = () => {
             </Box>
           </Stack>
           <Box sx={{ textAlign: "center", marginY: "20px" }}>
-            <MyForm onSubmit={handleRegistration}>
+            <MyForm
+              onSubmit={handleRegistration}
+              resolver={zodResolver(validationSchema)}
+              defaultValues={defaultValues}
+            >
               <Grid container spacing={2}>
                 <Grid item md={12} my={1}>
-                  <TextField
+                  <MyInput
                     label="Name"
-                    variant="outlined"
+                    type="text"
+                    name="patient.name"
                     size="small"
                     fullWidth={true}
                   />
@@ -107,28 +135,32 @@ const RegisterPage = () => {
                   <MyInput
                     label="email"
                     type="email"
-                    name="email"
+                    name="patient.email"
                     fullWidth={true}
                   />
                 </Grid>
                 <Grid item md={6} my={1}>
                   <MyInput
                     label="Password"
-                    type="password"
                     name="password"
+                    type="password"
                     fullWidth={true}
                   />
                 </Grid>
                 <Grid item md={6} my={1}>
-                  <TextField
+                  <MyInput
                     label="Contact Number"
                     type="tel"
-                    size="small"
+                    name="patient.contactNumber"
                     fullWidth={true}
                   />
                 </Grid>
                 <Grid item md={6} my={1}>
-                  <TextField label="Addresss" size="small" fullWidth={true} />
+                  <MyInput
+                    label="Addresss"
+                    name="patient.address"
+                    fullWidth={true}
+                  />
                 </Grid>
               </Grid>
               <Button type="submit" sx={{ marginY: "10px" }} fullWidth={true}>

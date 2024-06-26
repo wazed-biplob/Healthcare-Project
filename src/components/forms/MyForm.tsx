@@ -8,11 +8,22 @@ import {
 const MyForm = ({
   children,
   onSubmit,
+  resolver,
+  defaultValues,
 }: {
   children: React.ReactNode;
   onSubmit: SubmitHandler<FieldValues>;
+  resolver?: any;
+  defaultValues?: Record<string, any>;
 }) => {
-  const methods = useForm();
+  const formConfig: any = {};
+  if (resolver) {
+    formConfig["resolver"] = resolver;
+  }
+  if (defaultValues) {
+    formConfig["defaultValues"] = defaultValues;
+  }
+  const methods = useForm(formConfig);
   const { handleSubmit } = methods;
   const submit: SubmitHandler<FieldValues> = (data) => {
     console.log(data);

@@ -19,13 +19,21 @@ import { toast } from "sonner";
 import { useRouter } from "next/navigation";
 import MyForm from "@/components/forms/MyForm";
 import MyInput from "@/components/forms/MyInput";
+import z from "zod";
+import { zodResolver } from "@hookform/resolvers/zod";
+
 export interface ILoginData {
   email: string;
   password: string;
 }
+
+export const validationSchema = z.object({
+  email: z.string().email("Provide a valid email address"),
+  password: z.string().min(6, "At least 6 alphabet"),
+});
 const LoginPage = () => {
   const router = useRouter();
-  const handleLogin = async (data: ILoginData) => {
+  const handleLogin = async (data: FieldValues) => {
     try {
       const res = await loginPatient(data);
       if (res?.data?.accessToken) {
@@ -67,7 +75,11 @@ const LoginPage = () => {
             </Box>
           </Stack>
           <Box sx={{ textAlign: "center", marginY: "20px" }}>
-            <MyForm onSubmit={handleLogin}>
+            <MyForm
+              onSubmit={handleLogin}
+              resolver={zodResolver(validationSchema)}
+              defaultValues={{ email: "", password: "" }}
+            >
               <Grid container spacing={2}>
                 <Grid item md={6} my={1}>
                   <MyInput
