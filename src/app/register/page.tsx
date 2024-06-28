@@ -168,7 +168,7 @@ const RegisterPage = () => {
               </Button>
             </MyForm>
             <Typography component="p">
-              Do you already have an Account?
+              Do you already have an Account?&nbsp;
               <Link href="/login">Log in</Link>
             </Typography>
           </Box>
