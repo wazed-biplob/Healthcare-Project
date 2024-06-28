@@ -8,7 +8,7 @@ import {
   TextField,
   Typography,
 } from "@mui/material";
-import React from "react";
+import React, { useState } from "react";
 import Logo from "../../assets/svgs/logo.svg";
 import Image from "next/image";
 import Link from "next/link";
@@ -33,6 +33,7 @@ export const validationSchema = z.object({
 });
 const LoginPage = () => {
   const router = useRouter();
+  const [error, setError] = useState("");
   const handleLogin = async (data: FieldValues) => {
     try {
       const res = await loginPatient(data);
@@ -40,6 +41,8 @@ const LoginPage = () => {
         storeUserInfo({ accessToken: res?.data?.accessToken });
         toast.success(res?.message);
         router.push("/");
+      } else {
+        setError(res?.message);
       }
     } catch (err: any) {
       console.log(err.message);
@@ -74,6 +77,21 @@ const LoginPage = () => {
               </Typography>
             </Box>
           </Stack>
+          <Box>
+            {error && (
+              <Typography
+                sx={{
+                  backgroundColor: "red",
+                  padding: "1px",
+                  borderRadius: "2px",
+                  color: "white",
+                  textAlign: "center",
+                }}
+              >
+                {error}
+              </Typography>
+            )}
+          </Box>
           <Box sx={{ textAlign: "center", marginY: "20px" }}>
             <MyForm
               onSubmit={handleLogin}
