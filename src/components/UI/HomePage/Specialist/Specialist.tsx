@@ -1,22 +1,24 @@
-"use client";
 import { Button, Container, Stack, Typography } from "@mui/material";
+import next from "next";
 import Image from "next/image";
-import { useEffect, useState } from "react";
 
-const Specialist = () => {
-  const [specialities, setSpecialities] = useState();
+const Specialist = async () => {
+  const res = await fetch("http://localhost:5000/api/v1/specialities");
+  const { data: specialities } = await res.json();
 
-  useEffect(() => {
-    const fetchData = async () => {
-      const res = await fetch("http://localhost:5000/api/v1/specialities");
-      const data = await res.json();
+  // const [specialities, setSpecialities] = useState();
 
-      setSpecialities(data?.data);
-      console.log(data);
-    };
+  // useEffect(() => {
+  //   const fetchData = async () => {
+  //     const res = await fetch("http://localhost:5000/api/v1/specialities");
+  //     const data = await res.json();
 
-    fetchData();
-  }, []);
+  //     setSpecialities(data?.data);
+  //     console.log(data);
+  //   };
+
+  //   fetchData();
+  // }, []);
   return (
     <Container
       sx={{ margin: "40px 0px", textAlign: "center" }}
