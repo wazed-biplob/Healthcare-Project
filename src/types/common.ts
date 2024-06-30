@@ -32,3 +32,5 @@ export interface IErrorResponse {
   errorMessages: IMessage[];
 }
 export type UserRole = keyof typeof USER_ROLE;
+
+export const Gender = ["MALE", "FEMALE"];
