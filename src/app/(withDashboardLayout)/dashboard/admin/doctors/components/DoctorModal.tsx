@@ -8,6 +8,7 @@ import { modifyPayload } from "@/utils/modifyFormData";
 import { Button, Grid } from "@mui/material";
 import React from "react";
 import { FieldValues } from "react-hook-form";
+import { toast } from "sonner";
 
 export interface IDoctor {
   password: string;
@@ -57,16 +58,21 @@ const DoctorModal = ({
   open: boolean;
   setOpen: React.Dispatch<React.SetStateAction<boolean>>;
 }) => {
-  const [createDoctor] = useCreateDoctorMutation();
+  const [createDoctor, isLoading] = useCreateDoctorMutation();
   const onSubmit = async (data: FieldValues) => {
     data.doctor.experience = Number(data.doctor.experience);
     data.doctor.apointmentFee = Number(data.doctor.apointmentFee);
     const formData = modifyPayload(data);
     try {
       const res = await createDoctor(formData);
-      console.log(res);
+      if (res?.data?.id) {
+        toast.success("Doctor Created Successfully");
+        setOpen(false);
+      } else {
+        toast.error("Something Went Wrong");
+      }
     } catch (e: any) {
-      console.log(e.message);
+      toast.error(e?.message);
     }
   };
   return (

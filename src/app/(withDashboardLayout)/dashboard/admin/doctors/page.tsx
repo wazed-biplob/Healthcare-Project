@@ -5,9 +5,18 @@ import DoctorModal from "./components/DoctorModal";
 import { useGetAllDoctorsQuery } from "@/redux/api/specialitiesApi";
 import { DataGrid, GridColDef } from "@mui/x-data-grid";
 import DeleteIcon from "@mui/icons-material/Delete";
+import { useDebounce } from "@/redux/hooks";
 const DoctorsPage = () => {
   const [open, setOpen] = useState<boolean>(false);
-  const { data: doctorData, isLoading } = useGetAllDoctorsQuery({});
+  const [searchTerm, setSearchTerm] = useState<string>("");
+  const query: Record<string, any> = {};
+
+  const debounceTerm = useDebounce({ searchQuery: searchTerm, delay: 600 });
+  if (!!debounceTerm) {
+    query["searchTerm"] = searchTerm;
+  }
+  const { data: doctorData, isLoading } = useGetAllDoctorsQuery({ ...query });
+
   const handleDelete = async (id: string) => {};
   const columns: GridColDef[] = [
     { field: "name", headerName: "Name", flex: 1 },
@@ -38,7 +47,11 @@ const DoctorsPage = () => {
       <Stack direction="row" justifyContent="space-between" alignItems="center">
         <Button onClick={() => setOpen(true)}>Create Doctor</Button>
         <DoctorModal open={open} setOpen={setOpen} />
-        <TextField size="small" placeholder="Search Doctor" />
+        <TextField
+          onChange={(e) => setSearchTerm(e.target.value)}
+          size="small"
+          placeholder="Search Doctor"
+        />
       </Stack>
       {!isLoading ? (
         <Box my={2}>
