@@ -1,8 +1,8 @@
 import MyForm from "@/components/forms/MyForm";
 import MyInput from "@/components/forms/MyInput";
 import MySelect from "@/components/forms/MySelect";
-import MyFullScreenModal from "@/components/shared/Modal/MyFullScreenModal";
-import { useCreateDoctorMutation } from "@/redux/api/specialitiesApi";
+import MyFullScreenModal from "@/components/forms/Modal/MyFullScreenModal";
+import { useCreateDoctorMutation } from "@/components/shared/api/specialitiesApi";
 import { Gender } from "@/types";
 import { modifyPayload } from "@/utils/modifyFormData";
 import { Button, Grid } from "@mui/material";

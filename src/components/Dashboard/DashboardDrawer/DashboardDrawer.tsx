@@ -59,8 +59,27 @@ export default function DashboardDrawer({
             onClick={handleDrawerToggle}
             sx={{ mr: 2, display: { sm: "none" }, color: "primary.main" }}
           >
-            <MenuIcon />
+            <MenuIcon sx={{ color: "primary.main" }} />
           </IconButton>
+          {/* <Box
+            sx={{
+              display: "flex",
+              alignItems: "center",
+              justifyContent: "center",
+              width: "100%",
+            }}
+          >
+            <Box>
+              <Typography
+                variant="body2"
+                noWrap
+                component="div"
+                sx={{ color: "rgba(11, 17, 52, 0.6" }}
+              >
+                {/* Hi, {true ? "Loading..." : data?.name} */}
+          {/* </Typography>
+            </Box>
+          </Box> */}
           <Typography variant="h6" noWrap component="div">
             <Box color="gray">My HealthCare</Box>
           </Typography>

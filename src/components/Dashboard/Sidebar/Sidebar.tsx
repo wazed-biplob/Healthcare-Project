@@ -20,14 +20,22 @@ const Sidebar = () => {
   return (
     <div>
       <Stack>
-        <Box>
+        <Box
+          sx={{
+            display: "flex",
+            flexDirection: "column",
+            justifyContent: "center",
+            alignItems: "center",
+            my: "8px",
+          }}
+        >
           <Image src={assets.svgs.logo} width={40} height={40} alt="logo" />
           <Typography variant="h6" component="h1">
             HealthCare
           </Typography>
         </Box>
       </Stack>
-      <Toolbar />
+
       <Divider />
       <List>
         {drawerItems(userRole as UserRole).map((item, index) => (

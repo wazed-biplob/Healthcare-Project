@@ -2,10 +2,14 @@
 import React, { useState } from "react";
 import { Box, Button, IconButton, Stack, TextField } from "@mui/material";
 import DoctorModal from "./components/DoctorModal";
-import { useGetAllDoctorsQuery } from "@/redux/api/specialitiesApi";
+import {
+  useDeleteDoctorMutation,
+  useGetAllDoctorsQuery,
+} from "@/components/shared/api/specialitiesApi";
 import { DataGrid, GridColDef } from "@mui/x-data-grid";
 import DeleteIcon from "@mui/icons-material/Delete";
 import { useDebounce } from "@/redux/hooks";
+import { toast } from "sonner";
 const DoctorsPage = () => {
   const [open, setOpen] = useState<boolean>(false);
   const [searchTerm, setSearchTerm] = useState<string>("");
@@ -16,8 +20,18 @@ const DoctorsPage = () => {
     query["searchTerm"] = searchTerm;
   }
   const { data: doctorData, isLoading } = useGetAllDoctorsQuery({ ...query });
-
-  const handleDelete = async (id: string) => {};
+  const [deleteDoctor] = useDeleteDoctorMutation();
+  const handleDelete = async (id: string) => {
+    try {
+      const res = await deleteDoctor(id).unwrap();
+      //@ts-ignore
+      if (res?.id) {
+        toast.success("Doctor deleted Successfully");
+      }
+    } catch (e: any) {
+      toast.error(e?.message);
+    }
+  };
   const columns: GridColDef[] = [
     { field: "name", headerName: "Name", flex: 1 },
     { field: "email", headerName: "Email", flex: 1 },

@@ -1,8 +1,8 @@
 import MyFileUploader from "@/components/forms/MyFileUploader";
 import MyForm from "@/components/forms/MyForm";
 import MyInput from "@/components/forms/MyInput";
-import Modal from "@/components/shared/Modal/modal";
-import { useCreateSpecialityMutation } from "@/redux/api/specialitiesApi";
+import Modal from "@/components/forms/Modal/modal";
+import { useCreateSpecialityMutation } from "@/components/shared/api/specialitiesApi";
 import { modifyPayload } from "@/utils/modifyFormData";
 import { Button, Grid } from "@mui/material";
 import { FieldValues } from "react-hook-form";

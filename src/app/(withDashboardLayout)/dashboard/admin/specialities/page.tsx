@@ -5,7 +5,7 @@ import SpecialityModal from "./components/SpecialistModal";
 import {
   useDeleteSpecialityMutation,
   useGetAllSpecialitiesQuery,
-} from "@/redux/api/specialitiesApi";
+} from "@/components/shared/api/specialitiesApi";
 import { DataGrid, GridColDef } from "@mui/x-data-grid";
 import Image from "next/image";
 import DeleteIcon from "@mui/icons-material/Delete";
@@ -52,7 +52,7 @@ const SpecialistPage = () => {
   ];
   const handleDelete = async (id: string) => {
     try {
-      const res = await deleteSpeciality(id);
+      const res = await deleteSpeciality(id).unwrap();
       //@ts-ignore
       if (res?.id) {
         toast.success("Speciality Removed Successfully");

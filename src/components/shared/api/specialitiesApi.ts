@@ -1,5 +1,5 @@
 import { IDoctor } from "@/app/(withDashboardLayout)/dashboard/admin/doctors/components/DoctorModal";
-import { TagTypes } from "../tagTypes";
+import { TagTypes } from "../../../redux/tagTypes";
 import { baseApi } from "./baseApi";
 
 const specialitiesApi = baseApi.injectEndpoints({
@@ -48,6 +48,13 @@ const specialitiesApi = baseApi.injectEndpoints({
       }),
       invalidatesTags: [TagTypes.doctor],
     }),
+    deleteDoctor: build.mutation({
+      query: (id) => ({
+        url: `/doctor/soft/${id}`,
+        method: "DELETE",
+      }),
+      invalidatesTags: [TagTypes.doctor],
+    }),
   }),
   overrideExisting: false,
 });
@@ -58,4 +65,5 @@ export const {
   useDeleteSpecialityMutation,
   useCreateDoctorMutation,
   useGetAllDoctorsQuery,
+  useDeleteDoctorMutation,
 } = specialitiesApi;
